@@ -5,3 +5,5 @@ pyngrok
 python-dotenv
 pydantic
 google-cloud-storage
+requests
+tqdm
