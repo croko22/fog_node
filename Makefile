@@ -8,7 +8,7 @@ PIP_SYNC := .venv/bin/pip-sync
 
 setup: .venv
 	@echo "🔧 Setting up environment..."
-	./setup.sh
+	cd scripts && ./setup.sh
 
 .venv:
 	@echo "🐍 Creating virtual environment..."

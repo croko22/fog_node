@@ -47,6 +47,16 @@ The GUI will launch. Click "INICIAR SERVICIO" to start the API and Ngrok tunnel.
 }
 ```
 
+## Project Structure
+
+- `app/`: Source code
+- `bin/`: External binaries (Piper)
+- `models/`: ML Models
+- `generated_audio/`: Output directory
+- `scripts/`: Helper scripts
+- `Dockerfile` & `docker-compose.yml`: Containerization
+- `Makefile`: Automation commands
+
 **Response:**
 
 ```json
