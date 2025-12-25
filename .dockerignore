@@ -4,8 +4,8 @@ __pycache__
 app/**/__pycache__
 generated_audio/
 *.wav
-*.onnx
-*.json
+bin/
+models/
 docker-compose.yml
 README.md
 task.md
