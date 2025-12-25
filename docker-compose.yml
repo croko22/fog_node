@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  fog-node:
+    build: .
+    container_name: fog-node-01
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - ENV_MODE=production
+      # Reemplaza con tus valores reales o usa un archivo .env
+      - NGROK_AUTH_TOKEN=${NGROK_AUTH_TOKEN}
+      - BUCKET_NAME=${BUCKET_NAME}
+      # Montar credenciales si es necesario
+      # - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
+    volumes:
+      # Persistir audio generado
+      - ./generated_audio:/app/generated_audio
+      # Montar credenciales de GCP (descomentar si se usa)
+      # - ./credentials.json:/app/credentials.json
+    restart: unless-stopped

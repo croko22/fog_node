@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+*.wav
+piper/
+*.onnx
+*.json
+generated_audio/
