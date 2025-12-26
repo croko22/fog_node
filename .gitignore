@@ -6,3 +6,7 @@ __pycache__/
 bin/
 models/
 generated_audio/
+
+# GCP Credentials
+credentials.json
+.env

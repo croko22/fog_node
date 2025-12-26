@@ -1,13 +1,18 @@
 # Use official Python slim image
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIPER_BIN_PATH=/app/bin/piper/piper \
     MODEL_PATH=/app/models/es_ES-davefx-medium.onnx \
+    AUDIO_OUTPUT_DIR=generated_audio \
     # Headless mode for Flet/App (though we bypass GUI)
-    FLET_FORCE_WEB_SERVER=true
+    FLET_FORCE_WEB_SERVER=true \
+    # GCP Configuration (override with docker run -e or docker-compose)
+    GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json \
+    GCP_PROJECT_ID=mycloud-jhuamaniv \
+    BUCKET_NAME=fognode-audiobooks-1766767722
 
 WORKDIR /app
 

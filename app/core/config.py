@@ -13,7 +13,8 @@ class Settings:
     AUDIO_OUTPUT_DIR = os.getenv("AUDIO_OUTPUT_DIR", "generated_audio")
     USE_CUDA = os.getenv("USE_CUDA", "false").lower() == "true"
     
-    # Cloud Storage
+    # Google Cloud Platform
+    GCP_PROJECT_ID = os.getenv("GCP_PROJECT_ID")
     BUCKET_NAME = os.getenv("BUCKET_NAME")
     GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
     

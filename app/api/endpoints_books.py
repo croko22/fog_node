@@ -35,3 +35,15 @@ async def get_job(job_id: str):
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
     return job
+
+@router.delete("/jobs/{job_id}")
+async def delete_job(job_id: str):
+    job = JobManager.get_job(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+    
+    success = JobManager.delete_job(job_id)
+    if not success:
+        raise HTTPException(status_code=500, detail="Failed to delete job")
+    
+    return {"message": "Job deleted successfully", "id": job_id}

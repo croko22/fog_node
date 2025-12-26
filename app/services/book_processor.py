@@ -92,12 +92,14 @@ class BookProcessor:
                 # Check status to allow cancellation (future feature)
                 
                 try:
-                    # 1. Generate Audio
+                    # 1. Generate Audio locally
                     full_path = PiperService.synthesize(chunk, chunk_filename)
                     
-                    # 2. Upload to Cloud (Optional, currently just logic placeholder or reuse existing)
-                    # cloud_uri = StorageService.upload_file(full_path, chunk_filename)
+                    # 2. Upload to Cloud Storage (if configured) - for backup/persistence
+                    cloud_uri = StorageService.upload_file(full_path, f"audiobooks/{job_id}/{chunk_filename}")
                     
+                    # Always use local path for output_files (frontend serves from /audio/)
+                    # The cloud_uri is for backup/persistence only
                     generated_files.append(full_path)
                     JobManager.add_output_file(job_id, full_path)
                     
