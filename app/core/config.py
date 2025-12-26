@@ -11,6 +11,7 @@ class Settings:
     PORT = int(os.getenv("PORT", 8000))
     NGROK_AUTH_TOKEN = os.getenv("NGROK_AUTH_TOKEN")
     AUDIO_OUTPUT_DIR = os.getenv("AUDIO_OUTPUT_DIR", "generated_audio")
+    USE_CUDA = os.getenv("USE_CUDA", "false").lower() == "true"
     
     # Cloud Storage
     BUCKET_NAME = os.getenv("BUCKET_NAME")

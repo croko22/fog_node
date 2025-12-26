@@ -14,13 +14,22 @@ class PiperService:
         
         gui_logger.log(f"📥 Procesando: {text[:30]}...")
         
-        # Comando seguro (usamos shell=True por el pipe localmente)
-        cmd = f'echo "{text}" | {settings.PIPER_BIN_PATH} --model {settings.MODEL_PATH} --output_file "{output_path}"'
+        # Comando seguro sin shell=True y con input via stdin
+        cmd = [
+            settings.PIPER_BIN_PATH,
+            "--model", settings.MODEL_PATH,
+            "--output_file", output_path
+        ]
+        
+        if settings.USE_CUDA:
+            cmd.append("--cuda")
         
         try:
-            # En entorno de producción real, evitar shell=True si es posible o sanitizar rigurosamente.
-            # Aquí asumimos entorno controlado.
-            subprocess.run(cmd, shell=True, check=True, executable='/bin/bash')
+            subprocess.run(
+                cmd, 
+                input=text.encode('utf-8'),
+                check=True
+            )
             
             gui_logger.log(f"✅ Audio generado: {output_path}")
             return output_path

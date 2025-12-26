@@ -23,3 +23,11 @@ async def synthesize_audio(request: AudioRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/status")
+async def system_status():
+    return {
+        "status": "online",
+        "service": "FogNode Audio",
+        "version": "0.1.0"
+    }

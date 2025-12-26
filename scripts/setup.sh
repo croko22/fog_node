@@ -70,6 +70,7 @@ ENV_MODE=development
 # Configuración de Piper
 PIPER_BIN_PATH=$(pwd)/../bin/piper/piper
 MODEL_PATH=$(pwd)/../models/${MODEL_NAME}.onnx
+USE_CUDA=false
 
 # Ngrok
 NGROK_AUTH_TOKEN=37LEi6vKPfpg591O9V763FkXlQE_5E3SWxoXchMdvJttvz4mV
