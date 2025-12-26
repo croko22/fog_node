@@ -10,3 +10,9 @@ generated_audio/
 # GCP Credentials
 credentials.json
 .env
+
+# Pulumi
+infra/.pulumi/
+infra/venv/
+infra/__pycache__/
+*.pulumi-state

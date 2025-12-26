@@ -1,0 +1,3 @@
+name: fognode-infrastructure
+runtime: python
+description: Pulumi infrastructure for FogNode Audiobooks on GCP

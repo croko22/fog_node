@@ -1,0 +1,12 @@
+# Pulumi
+.pulumi/
+*.pyc
+__pycache__/
+
+# Python virtual environment
+venv/
+.venv/
+
+# Credentials
+*.json
+!Pulumi*.json
