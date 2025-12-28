@@ -12,7 +12,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     # GCP Configuration (override with docker run -e or docker-compose)
     GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json \
     GCP_PROJECT_ID=mycloud-jhuamaniv \
-    BUCKET_NAME=fognode-audiobooks-1766767722
+    BUCKET_NAME=fognode-audiobooks-mycloud-jhuamaniv
 
 WORKDIR /app
 

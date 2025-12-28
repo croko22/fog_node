@@ -4,6 +4,7 @@ import asyncio
 from app.core.jobs import JobManager, JobStatus
 from app.services.piper import PiperService
 from app.services.storage import StorageService
+from app.core.logger import gui_logger
 import pypdf
 import ebooklib
 from ebooklib import epub
@@ -92,16 +93,22 @@ class BookProcessor:
                 # Check status to allow cancellation (future feature)
                 
                 try:
-                    # 1. Generate Audio locally
+                    # 1. Generate Audio locally (Fog Computing: processing at edge)
                     full_path = PiperService.synthesize(chunk, chunk_filename)
                     
-                    # 2. Upload to Cloud Storage (if configured) - for backup/persistence
+                    # 2. Upload to Cloud Storage (Fog Computing: storage in cloud)
                     cloud_uri = StorageService.upload_file(full_path, f"audiobooks/{job_id}/{chunk_filename}")
                     
-                    # Always use local path for output_files (frontend serves from /audio/)
-                    # The cloud_uri is for backup/persistence only
-                    generated_files.append(full_path)
-                    JobManager.add_output_file(job_id, full_path)
+                    # 3. Store GCS URI as source of truth (not local path)
+                    # This ensures persistence even if fog node restarts
+                    if cloud_uri and not cloud_uri.startswith("error"):
+                        JobManager.add_output_file(job_id, cloud_uri)
+                        generated_files.append(cloud_uri)
+                    else:
+                        # Fallback: use local path if upload failed
+                        gui_logger.log(f"⚠️ Upload falló, usando ruta local: {full_path}")
+                        JobManager.add_output_file(job_id, full_path)
+                        generated_files.append(full_path)
                     
                 except Exception as e:
                     print(f"Error processing chunk {i}: {e}")

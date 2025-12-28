@@ -141,7 +141,7 @@ class InMemoryJobManager:
 
     @classmethod
     def add_output_file(cls, job_id: str, file_path: str):
-        if job_id in cls._jobs:
+         if job_id in cls._jobs:
             cls._jobs[job_id].output_files.append(file_path)
 
     @classmethod

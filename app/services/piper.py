@@ -1,14 +1,22 @@
 import os
 import subprocess
+import stat
 from app.core.config import settings
 from app.core.logger import gui_logger
 
 class PiperService:
     @staticmethod
     def synthesize(text: str, filename: str):
-        # Asegurar directorio de salida
+        # Asegurar directorio de salida con permisos
         output_dir = settings.AUDIO_OUTPUT_DIR
         os.makedirs(output_dir, exist_ok=True)
+        
+        # Intentar dar permisos de escritura si el directorio existe
+        try:
+            os.chmod(output_dir, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        except PermissionError:
+            # Si no podemos cambiar permisos, continuar de todas formas
+            pass
         
         output_path = os.path.join(output_dir, filename)
         
