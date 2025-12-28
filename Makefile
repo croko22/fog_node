@@ -1,4 +1,4 @@
-.PHONY: setup update-deps run clean test lint
+.PHONY: setup update-deps run clean test lint deploy preview destroy
 
 # Python interpreter in virtual environment
 PYTHON := .venv/bin/python
@@ -34,3 +34,15 @@ lint:
 
 test:
 	@echo "🧪 No tests configured."
+
+deploy:
+	@echo "🚀 Deploying to GCP with Pulumi..."
+	./scripts/deploy.sh
+
+preview:
+	@echo "👀 Previewing infrastructure changes..."
+	@cd infra && pulumi preview
+
+destroy:
+	@echo "💥 Destroying infrastructure..."
+	./scripts/destroy.sh

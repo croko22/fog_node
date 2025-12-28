@@ -1,0 +1,7 @@
+config:
+  gcp:project: mycloud-jhuamaniv
+  gcp:region: us-central1
+  fognode-infrastructure:service-cpu: "1"
+  fognode-infrastructure:service-memory: 512Mi
+  fognode-infrastructure:min-instances: 0
+  fognode-infrastructure:max-instances: 10
