@@ -27,16 +27,15 @@ class StorageService:
 
             blob.upload_from_filename(file_path)
 
-            # Make blob publicly readable (for Fog Computing architecture)
-            blob.make_public()
+            # NOTE: ACLs are disabled in Uniform Bucket-Level Access.
+            # We skip make_public(). If public access is needed, configure the bucket policy.
             
             gs_uri = f"gs://{bucket_name}/{destination_blob_name}"
-            public_url = blob.public_url
+            # public_url = blob.public_url # reliant on being public
             
             gui_logger.log(f"✅ Subida exitosa: {destination_blob_name}")
-            gui_logger.log(f"   📎 URL pública: {public_url}")
+            gui_logger.log(f"   📎 GS URI: {gs_uri}")
             
-            # Return gs:// URI as source of truth, but we can also get public URL
             return gs_uri
 
         except Exception as e:

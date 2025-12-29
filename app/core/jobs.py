@@ -178,9 +178,26 @@ def get_job_manager():
 
 # Backwards-compatible class that delegates to the appropriate manager
 class JobManager:
+    _callback = None
+
+    @classmethod
+    def register_callback(cls, callback):
+        cls._callback = callback
+
+    @classmethod
+    def _notify(cls, job_id: str, event_type: str, data: dict):
+        if cls._callback:
+            try:
+                cls._callback(job_id, event_type, data)
+            except Exception as e:
+                # Avoid crashing if UI fails
+                print(f"UI Callback error: {e}")
+
     @classmethod
     def create_job(cls, filename: str) -> JobResponse:
-        return get_job_manager().create_job(filename)
+        job = get_job_manager().create_job(filename)
+        cls._notify(job.id, "created", {"filename": job.filename, "status": job.status.value})
+        return job
 
     @classmethod
     def get_job(cls, job_id: str) -> Optional[JobResponse]:
@@ -192,16 +209,35 @@ class JobManager:
 
     @classmethod
     def update_progress(cls, job_id: str, processed_chunks: int, total_chunks: int = None, message: str = None):
-        return get_job_manager().update_progress(job_id, processed_chunks, total_chunks, message)
+        result = get_job_manager().update_progress(job_id, processed_chunks, total_chunks, message)
+        
+        data = {"processed_chunks": processed_chunks}
+        if total_chunks is not None:
+            data["total_chunks"] = total_chunks
+        if message:
+            data["message"] = message
+            
+        cls._notify(job_id, "progress", data)
+        return result
 
     @classmethod
     def set_status(cls, job_id: str, status: JobStatus, message: str = None):
-        return get_job_manager().set_status(job_id, status, message)
+        result = get_job_manager().set_status(job_id, status, message)
+        
+        data = {"status": status.value}
+        if message:
+            data["message"] = message
+            
+        cls._notify(job_id, "status_change", data)
+        return result
 
     @classmethod
     def add_output_file(cls, job_id: str, file_path: str):
-        return get_job_manager().add_output_file(job_id, file_path)
+        result = get_job_manager().add_output_file(job_id, file_path)
+        cls._notify(job_id, "new_file", {"file_path": file_path})
+        return result
 
     @classmethod
     def delete_job(cls, job_id: str) -> bool:
         return get_job_manager().delete_job(job_id)
+
